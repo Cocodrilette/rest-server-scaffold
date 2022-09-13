@@ -1,4 +1,4 @@
-# REST Server scaffold | *v1.0.0*
+# REST Server scaffold | *v0.2.0*
 ## Config
 
 1. 
