@@ -1,9 +1,9 @@
-const JWTValidator = require("../middlewares/jwtValidator");
+const jwtValidator = require("../middlewares/jwtValidator");
 const requestFieldValidator = require("../middlewares/requestFieldsValidator");
 const roleValidator = require("../middlewares/rolesValidators");
 
 module.exports = {
-  JWTValidator,
+  ...jwtValidator,
   ...requestFieldValidator,
   ...roleValidator,
 };

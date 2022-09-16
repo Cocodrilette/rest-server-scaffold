@@ -40,4 +40,6 @@ const JWTValidator = async (req, res = response, next) => {
   }
 };
 
-module.exports = JWTValidator;
+module.exports = {
+  JWTValidator,
+};

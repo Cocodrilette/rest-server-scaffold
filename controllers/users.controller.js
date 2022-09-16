@@ -69,7 +69,6 @@ const usersPUT = async (req, res = response) => {
   const newUserData = await userModel.findByIdAndUpdate(id, userToUpdate);
 
   res.json({
-    msg: "PUT controller",
     newUserData,
   });
 };
