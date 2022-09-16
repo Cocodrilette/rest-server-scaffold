@@ -13,10 +13,3 @@ const dbConnection = async () => {
 };
 
 module.exports = dbConnection;
-
-// {
-//       useNewUrlParser: true,
-//       useUnifiedTopology: true,
-//       useCreateIndex: true,
-//       useFindAndModify: false,
-//     }

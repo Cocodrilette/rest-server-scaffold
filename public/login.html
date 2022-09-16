@@ -5,19 +5,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Register</title>
     <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+
 </head>
 
 <body>
-
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/register">Register</a></li>
-            <li><a href="/login">Login</a></li>
-        </ul>
-    </nav>
+    <h1>Register</h1>
+    <form action="http://localhost:8585/api/users" method="post">
+        <input type="text" name="user-email" id="user-email">
+        <input type="password" name="user-password" id="user-password">
+        <input type="submit" value="Login">
+    </form>
 
 </body>
 

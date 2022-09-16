@@ -41,7 +41,6 @@ const usersPOST = async (req, res = response) => {
   }
 
   res.json({
-    msg: "POST API Controller",
     newUser,
   });
 };
@@ -77,10 +76,25 @@ const usersPUT = async (req, res = response) => {
 
 const usersDELETE = async (req, res = response) => {
   const { id } = req.params;
-  const user = await userModel.findByIdAndUpdate(id, { state: false });
+
+  // const uid = req.uid;
+
+  const userAuthenticated = req.userAuthenticated;
+
+  const userToDelete = await userModel.findById(id);
+
+  if (userToDelete.state === false) {
+    res.json({
+      Error: "This user is already deleted",
+    });
+    return;
+  }
+
+  await userModel.findByIdAndUpdate(id, { state: false });
 
   res.json({
-    userDeleted: user,
+    userDeleted: userToDelete,
+    actionExecutor: userAuthenticated,
   });
 };
 

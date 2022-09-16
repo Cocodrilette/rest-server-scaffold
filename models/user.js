@@ -35,7 +35,8 @@ const UserSchema = Schema({
 // This is used to remove a certain fields from the returned JSON
 // but the Schema and Model still saving all fields
 UserSchema.methods.toJSON = function () {
-  const { __v, password, ...userData } = this.toObject();
+  const { __v, password, _id, ...userData } = this.toObject();
+  userData.uid = _id;
   return userData;
 };
 

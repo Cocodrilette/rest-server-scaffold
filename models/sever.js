@@ -9,7 +9,10 @@ class Server {
     this.app = express();
     this.PORT = process.env.PORT;
     this.HOST = process.env.HOST;
+
+    // endpints
     this.userEndpoint = "/api/users";
+    this.authEndpoint = "/api/auth";
 
     // Middlewares
     this.middlewares();
@@ -38,6 +41,7 @@ class Server {
 
   routes() {
     // getting the routes config from :
+    this.app.use(this.authEndpoint, require("../routes/auth.routes"));
     this.app.use(this.userEndpoint, require("../routes/user.routes"));
   }
 
