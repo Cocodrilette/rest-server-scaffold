@@ -13,12 +13,12 @@ const {
   isEmailExist,
   isUserExistById,
 } = require("../helpers/dbValidators");
-const JWTValidator = require("../middlewares/jwtValidator");
-
+//
 const {
+  JWTValidator,
   requestFieldValidator,
-} = require("../middlewares/requestFieldsValidator");
-const { isAdminRole, haveRole } = require("../middlewares/rolesValidators");
+  haveRole,
+} = require("../middlewares");
 
 const router = Router();
 
