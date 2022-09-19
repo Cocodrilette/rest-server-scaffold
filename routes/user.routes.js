@@ -17,7 +17,8 @@ const {
 const {
   JWTValidator,
   requestFieldValidator,
-  haveRole,
+  // haveRole,
+  isAdminRole,
 } = require("../middlewares");
 
 const router = Router();
@@ -68,8 +69,8 @@ router.delete(
   "/:id",
   [
     JWTValidator,
-    // isAdminRole,
-    haveRole("ADMIN_ROLE", "SALES_ROLE"),
+    isAdminRole,
+    // haveRole("ADMIN_ROLE", "USER_ROLE"),
     check("id").custom(isUserExistById),
     check("id", "This is not valid ID").isMongoId(),
     requestFieldValidator,

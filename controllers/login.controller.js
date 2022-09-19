@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 
 const userModel = require("../models/user");
 const generateJWT = require("../helpers/generateJWT");
+const { googleVerify } = require("../helpers/googleVerify");
 
 const loginPOST = async (req, res = response) => {
   const { email, password } = req.body;
@@ -47,6 +48,49 @@ const loginPOST = async (req, res = response) => {
   }
 };
 
+const googleSignIn = async (req, res = response) => {
+  const { id_token } = req.body;
+
+  try {
+    const { name, email, img } = await googleVerify(id_token);
+
+    let user = await userModel.findOne({ email });
+
+    if (!user) {
+      // Create user
+      const data = {
+        name,
+        email,
+        password: ":P", // the hash function never will match this password
+        img,
+        google: true,
+      };
+      user = new userModel(data);
+      await user.save();
+    }
+
+    // if user state is false
+    if (!user.state) {
+      res.status(401).json({
+        Error: "Get in touch with the administrator. User blocked.",
+      });
+    }
+
+    const token = await generateJWT(user.id);
+
+    res.json({
+      user,
+      token,
+    });
+    //
+  } catch (error) {
+    res.status(400).json({
+      Error: "Google token is not valid.",
+    });
+  }
+};
+
 module.exports = {
   loginPOST,
+  googleSignIn,
 };

@@ -32,7 +32,7 @@ const haveRole = (...roles) => {
 
     if (!roleIsValid) {
       return res.status(401).json({
-        Error: "You are not authorized to do this action. - admin, sales",
+        Error: "You are not authorized to do this action.",
       });
     }
 

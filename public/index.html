@@ -5,92 +5,53 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drum Kit</title>
-    <link rel="stylesheet" href="index.css">
+    <title>Super Cafe</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        h1 {
+            border-bottom: 1px solid black;
+        }
+    </style>
 </head>
 
 <body>
+    <h1>Super Cafe</h1>
 
-    <header>
-        <h1>Mis Artesanías API Drum Kit</h1>
-        <h3>Pruébalo!</h3>
-    </header>
 
-    <div class="keys">
-        <div data-key="65" class="key">
-            <kbd>A</kbd>
-            <span class="sound">Clap</span>
-        </div>
-        <div data-key="83" class="key">
-            <kbd>S</kbd>
-            <span class="sound">Hithat</span>
-        </div>
-        <div data-key="68" class="key">
-            <kbd>D</kbd>
-            <span class="sound">Kick</span>
-        </div>
-        <div data-key="70" class="key">
-            <kbd>F</kbd>
-            <span class="sound">Openhat</span>
-        </div>
-        <div data-key="71" class="key">
-            <kbd>G</kbd>
-            <span class="sound">Boom</span>
-        </div>
-        <div data-key="72" class="key">
-            <kbd>H</kbd>
-            <span class="sound">Ride</span>
-        </div>
-        <div data-key="74" class="key">
-            <kbd>J</kbd>
-            <span class="sound">Snare</span>
-        </div>
-        <div data-key="75" class="key">
-            <kbd>K</kbd>
-            <span class="sound">Tom</span>
-        </div>
-        <div data-key="76" class="key">
-            <kbd>L</kbd>
-            <span class="sound">Tink</span>
-        </div>
+    <div id="g_id_onload" data-client_id="66883113189-0cape7vdbtboavdqf41os3k0cphfuc10.apps.googleusercontent.com"
+        data-callback="handleCredentialResponse" data-auto_prompt="false">
     </div>
-
-    <audio data-key="65" src="sounds/assets_sounds_clap.wav"></audio>
-    <audio data-key="83" src="sounds/assets_sounds_hihat.wav"></audio>
-    <audio data-key="68" src="sounds/assets_sounds_kick.wav"></audio>
-    <audio data-key="70" src="sounds/assets_sounds_openhat.wav"></audio>
-    <audio data-key="71" src="sounds/assets_sounds_boom.wav"></audio>
-    <audio data-key="72" src="sounds/assets_sounds_ride.wav"></audio>
-    <audio data-key="74" src="sounds/assets_sounds_snare.wav"></audio>
-    <audio data-key="75" src="sounds/assets_sounds_tom.wav"></audio>
-    <audio data-key="76" src="sounds/assets_sounds_tink.wav"></audio>
-
+    <!-- data-login_uri="https://your.domain/your_login_endpoint" -->
+    <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with"
+        data-shape="rectangular" data-logo_alignment="left">
+    </div>
     <script>
+        function handleCredentialResponse(response) {
+            // decodeJwtResponse() is a custom function defined by you
+            // to decode the credential response.
 
-        function playSound(e) {
-            const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-            console.log(audio)
-            if (!audio) return;
-            audio.currentTime = 0;
-            audio.play();
-            const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
-            key.classList.add('playing');
+            const body = { id_token: response.credential }
+
+            fetch('http://localhost:8585/api/auth/google', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            })
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(err => console.error(err));
+            //     const responsePayload = decodeJwtResponse(response.credential);
+
+            //     console.log("ID: " + responsePayload.sub);
+            //     console.log('Full Name: ' + responsePayload.name);
+            //     console.log('Given Name: ' + responsePayload.given_name);
+            //     console.log('Family Name: ' + responsePayload.family_name);
+            //     console.log("Image URL: " + responsePayload.picture);
+            //     console.log("Email: " + responsePayload.email);
         }
-
-        function removeTransition(e) {
-            // skip it if it's not a transform
-            // This is basically to not listen all the events
-            if (e.propertyName !== 'transform') return;
-            this.classList.remove('playing');
-        }
-
-        window.addEventListener('keydown', playSound);
-
-        const keys = document.querySelectorAll('.key');
-        keys.forEach(key => key.addEventListener('transitionend', removeTransition));
-
     </script>
-
 </body>
 
 </html>
