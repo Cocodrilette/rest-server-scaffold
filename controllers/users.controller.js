@@ -26,14 +26,6 @@ const usersGET = async (req, res = response) => {
 
 const usersPOST = async (req, res = response) => {
   const { name, email, password, role = "USER_ROLE" } = req.body;
-  const apiKey = req.header("x-api-key");
-
-  if (role == "ADMIN_ROLE" && apiKey != process.env.API_KEY) {
-    res.json({
-      Error: "You are not allowed to create an admin user",
-    });
-    return;
-  }
 
   const newUser = new userModel({
     name,

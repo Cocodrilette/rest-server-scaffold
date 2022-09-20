@@ -17,14 +17,16 @@ const {
 const {
   JWTValidator,
   requestFieldValidator,
-  // haveRole,
+  haveRole,
   isAdminRole,
+  haveApiKey,
+  haveAdminKey,
 } = require("../middlewares");
 
 const router = Router();
 
 // ../controllers/users.controller.js
-router.get("/", usersGET);
+router.get("/", [haveApiKey], usersGET);
 
 // ../controllers/users.controller.js
 router.post(
@@ -32,6 +34,7 @@ router.post(
   "/",
   // middlewares
   [
+    haveApiKey,
     check("name", "The name is required").not().isEmpty(), // it's means: can't be empty
     check("password", "The password is required").not().isEmpty(),
     check(
@@ -56,6 +59,7 @@ router.post(
 router.put(
   "/:id",
   [
+    haveRole("ADMIN_ROLE", "USER_ROLE"),
     check("id", "This is not valid ID").isMongoId(),
     check("id").custom(isUserExistById),
     check("role").custom(isValidRole),
@@ -69,8 +73,8 @@ router.delete(
   "/:id",
   [
     JWTValidator,
+    haveAdminKey,
     isAdminRole,
-    // haveRole("ADMIN_ROLE", "USER_ROLE"),
     check("id").custom(isUserExistById),
     check("id", "This is not valid ID").isMongoId(),
     requestFieldValidator,
