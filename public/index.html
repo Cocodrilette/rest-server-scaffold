@@ -11,6 +11,17 @@
         h1 {
             border-bottom: 1px solid black;
         }
+
+        button[class="sign-out"] {
+            background-color: white;
+            margin-top: 10px;
+            color: black;
+            border: 1px solid rgb(224, 224, 224);
+            width: 250px;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -25,7 +36,15 @@
     <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with"
         data-shape="rectangular" data-logo_alignment="left">
     </div>
+
+    <div>
+        <button class="sign-out">Sing Out</button>
+    </div>
+
     <script>
+
+        const signOut = document.querySelector('.sign-out');
+
         function handleCredentialResponse(response) {
             // decodeJwtResponse() is a custom function defined by you
             // to decode the credential response.
@@ -40,7 +59,21 @@
                 body: JSON.stringify(body)
             })
                 .then(response => response.json())
+                .then(response => {
+                    console.log(response);
+                    localStorage.setItem('email', response.user.email);
+                })
                 .catch(err => console.error(err));
+        }
+
+        signOut.onclick = () => {
+            console.log(google.accounts.id);
+            google.accounts.id.disableAutoSelect();
+
+            google.accounts.id.revoke(localStorage.getItem('email'), () => {
+                localStorage.removeItem('email');
+                location.reload();
+            });
         }
     </script>
 </body>

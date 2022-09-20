@@ -18,6 +18,13 @@ const usersGET = async (req, res = response) => {
     userModel.find(stateQuery).skip(from).limit(limit),
   ]);
 
+  try {
+  } catch (error) {
+    res.sendStatus(404).json({
+      Error: "Error getting users",
+    });
+  }
+
   res.json({
     usersCount,
     users,
