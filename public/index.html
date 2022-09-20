@@ -51,7 +51,9 @@
 
             const body = { id_token: response.credential }
 
-            fetch('http://localhost:8585/api/auth/google' || 'https://super-cafe.herokuapp.com/api/auth/google', {
+            fetch(window.location.hostname.includes('localhost')
+                ? 'http:localhost:8585/api/auth/google'
+                : 'https://super-cafe.herokuapp.com//api/auth/google', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
