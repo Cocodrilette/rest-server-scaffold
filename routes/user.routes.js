@@ -59,6 +59,7 @@ router.post(
 router.put(
   "/:id",
   [
+    haveApiKey,
     check("id", "This is not valid ID").isMongoId(),
     check("id").custom(isUserExistById),
     check("role").custom(isValidRole),
