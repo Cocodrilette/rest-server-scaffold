@@ -59,7 +59,6 @@ router.post(
 router.put(
   "/:id",
   [
-    haveRole("ADMIN_ROLE", "USER_ROLE"),
     check("id", "This is not valid ID").isMongoId(),
     check("id").custom(isUserExistById),
     check("role").custom(isValidRole),
