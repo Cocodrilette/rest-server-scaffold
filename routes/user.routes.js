@@ -2,10 +2,10 @@ const { Router } = require("express");
 const { check } = require("express-validator");
 
 const {
-  usersGET,
-  usersPOST,
-  usersPUT,
-  usersDELETE,
+  getAllUsers,
+  createUser,
+  updateUser,
+  deleteUser,
 } = require("../controllers/users.controller");
 //
 const {
@@ -17,7 +17,7 @@ const {
 const {
   JWTValidator,
   requestFieldValidator,
-  haveRole,
+  // haveRole,
   isAdminRole,
   haveApiKey,
   haveAdminKey,
@@ -26,7 +26,7 @@ const {
 const router = Router();
 
 // ../controllers/users.controller.js
-router.get("/", [haveApiKey], usersGET);
+router.get("/", [haveApiKey], getAllUsers);
 
 // ../controllers/users.controller.js
 router.post(
@@ -52,7 +52,7 @@ router.post(
     requestFieldValidator,
   ],
   // handler
-  usersPOST
+  createUser
 );
 
 // ../controllers/users.controller.js
@@ -65,7 +65,7 @@ router.put(
     check("role").custom(isValidRole),
     requestFieldValidator,
   ],
-  usersPUT
+  updateUser
 );
 
 // ../controllers/users.controller.js
@@ -79,7 +79,7 @@ router.delete(
     check("id", "This is not valid ID").isMongoId(),
     requestFieldValidator,
   ],
-  usersDELETE
+  deleteUser
 );
 
 module.exports = router;

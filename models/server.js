@@ -11,8 +11,12 @@ class Server {
     this.HOST = process.env.HOST;
 
     // endpints
-    this.userEndpoint = "/api/users";
-    this.authEndpoint = "/api/auth";
+    this.paths = {
+      auth: "/api/auth",
+      category: "/api/categories",
+      products: "/api/products",
+      user: "/api/users",
+    };
 
     // Middlewares
     this.middlewares();
@@ -41,8 +45,10 @@ class Server {
 
   routes() {
     // getting the routes config from :
-    this.app.use(this.authEndpoint, require("../routes/auth.routes"));
-    this.app.use(this.userEndpoint, require("../routes/user.routes"));
+    this.app.use(this.paths.auth, require("../routes/auth.routes"));
+    this.app.use(this.paths.category, require("../routes/categories.routes"));
+    this.app.use(this.paths.products, require("../routes/products.routes"));
+    this.app.use(this.paths.user, require("../routes/user.routes"));
   }
 
   listen() {

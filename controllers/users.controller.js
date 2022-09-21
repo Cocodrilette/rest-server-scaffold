@@ -1,9 +1,45 @@
+require("dotenv").config();
 const { response } = require("express");
 const hashPassword = require("../helpers/hashPassword");
 
-const userModel = require("../models/user");
+const { userModel } = require("../models");
 
-const usersGET = async (req, res = response) => {
+// -----------------------------------------
+
+const createUser = async (req, res = response) => {
+  const { name, email, password, role = "USER_ROLE" } = req.body;
+
+  if (
+    role == "ADMIN_ROLE" &&
+    req.header("x-admin-key") !== process.env.ADMIN_KEY
+  ) {
+    res.status(401).json({
+      Error: "You cannot create Admin User 👀",
+    });
+  }
+
+  const newUser = new userModel({
+    name,
+    email,
+    password: hashPassword(password),
+    role,
+  });
+
+  // then save
+  try {
+    await newUser.save();
+  } catch (error) {
+    console.log("Error", error);
+  }
+
+  res.json({
+    newUser,
+  });
+};
+
+// -----------------------------------------
+
+const getAllUsers = async (req, res = response) => {
   const { limit = 5, from = 0 } = req.query;
   if (isNaN(limit) || isNaN(from)) {
     res.json({
@@ -31,29 +67,9 @@ const usersGET = async (req, res = response) => {
   });
 };
 
-const usersPOST = async (req, res = response) => {
-  const { name, email, password, role = "USER_ROLE" } = req.body;
+// -----------------------------------------
 
-  const newUser = new userModel({
-    name,
-    email,
-    password: hashPassword(password),
-    role,
-  });
-
-  // then save
-  try {
-    await newUser.save();
-  } catch (error) {
-    console.log("Error", error);
-  }
-
-  res.json({
-    newUser,
-  });
-};
-
-const usersPUT = async (req, res = response) => {
+const updateUser = async (req, res = response) => {
   const { id } = req.params;
   const {
     prevName,
@@ -74,14 +90,18 @@ const usersPUT = async (req, res = response) => {
     google_OAuth: google_OAuth ? google_OAuth : prevGoogle_OAuth,
   };
 
-  const newUserData = await userModel.findByIdAndUpdate(id, userToUpdate);
+  const newUserData = await userModel.findByIdAndUpdate(id, userToUpdate, {
+    new: true,
+  });
 
   res.json({
     newUserData,
   });
 };
 
-const usersDELETE = async (req, res = response) => {
+// -----------------------------------------
+
+const deleteUser = async (req, res = response) => {
   const { id } = req.params;
 
   // const uid = req.uid;
@@ -106,8 +126,8 @@ const usersDELETE = async (req, res = response) => {
 };
 
 module.exports = {
-  usersGET,
-  usersPOST,
-  usersPUT,
-  usersDELETE,
+  getAllUsers,
+  createUser,
+  updateUser,
+  deleteUser,
 };

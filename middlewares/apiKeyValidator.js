@@ -1,5 +1,13 @@
 const haveApiKey = (req, res = response, next) => {
   const apiKey = req.header("x-api-key");
+  const role = req.body.role;
+
+  if (role == "ADMIN_ROLE") {
+    res.status(401).json({
+      Error: "You are not authorize to do that.",
+    });
+  }
+
   if (!apiKey) {
     return res.status(401).json({
       msg: "No API key provided",

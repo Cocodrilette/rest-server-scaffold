@@ -2,6 +2,7 @@ const { Router } = require("express");
 const { check } = require("express-validator");
 
 const { loginPOST, googleSignIn } = require("../controllers/login.controller");
+const { haveApiKey } = require("../middlewares");
 const {
   requestFieldValidator,
 } = require("../middlewares/requestFieldsValidator");
@@ -12,6 +13,7 @@ const router = Router();
 router.post(
   "/login",
   [
+    haveApiKey,
     check("email", "The email is required").not().isEmpty(),
     check("email", "This don't look like an email 👀").isEmail(),
     check("password", "The password is required").not().isEmpty(),
