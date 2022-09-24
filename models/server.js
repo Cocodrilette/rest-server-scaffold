@@ -14,6 +14,7 @@ class Server {
     this.paths = {
       auth: "/api/auth",
       category: "/api/categories",
+      search: "/api/search",
       products: "/api/products",
       user: "/api/users",
     };
@@ -47,6 +48,7 @@ class Server {
     // getting the routes config from :
     this.app.use(this.paths.auth, require("../routes/auth.routes"));
     this.app.use(this.paths.category, require("../routes/categories.routes"));
+    this.app.use(this.paths.search, require("../routes/search.routes"));
     this.app.use(this.paths.products, require("../routes/products.routes"));
     this.app.use(this.paths.user, require("../routes/user.routes"));
   }
