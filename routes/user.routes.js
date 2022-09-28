@@ -60,6 +60,7 @@ router.put(
   "/:id",
   [
     haveApiKey,
+    JWTValidator,
     check("id", "This is not valid ID").isMongoId(),
     check("id").custom(isUserExistById),
     check("role").custom(isValidRole),

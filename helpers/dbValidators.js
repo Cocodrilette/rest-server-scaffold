@@ -8,6 +8,7 @@ const isValidRole = async (role = "") => {
   if (!roleExists) {
     throw new Error(`The role: ${role} doesn't exist`);
   }
+  return true;
 };
 
 const isEmailExist = async (email) => {
@@ -15,6 +16,7 @@ const isEmailExist = async (email) => {
   if (emailExist) {
     throw new Error(`This email already exist 👀`);
   }
+  return true;
 };
 
 const isUserExistById = async (id) => {
@@ -22,6 +24,7 @@ const isUserExistById = async (id) => {
   if (!userExist) {
     throw new Error("Any user registered with this ID");
   }
+  return true;
 };
 
 const isCategoryExistByID = async (id) => {
@@ -29,6 +32,7 @@ const isCategoryExistByID = async (id) => {
   if (!categoryExist) {
     throw new Error("Any category with this ID");
   }
+  return true;
 };
 
 const isProductExistByID = async (id) => {
@@ -36,6 +40,15 @@ const isProductExistByID = async (id) => {
   if (!productExist) {
     throw new Error("Any product with this ID");
   }
+  return true;
+};
+
+const isValidCollection = (collection = "", collections = []) => {
+  const isValid = collections.includes(collection);
+  if (!isValid) {
+    throw new Error("This collection is not valid");
+  }
+  return true;
 };
 
 module.exports = {
@@ -44,4 +57,5 @@ module.exports = {
   isUserExistById,
   isCategoryExistByID,
   isProductExistByID,
+  isValidCollection,
 };

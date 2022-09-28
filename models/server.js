@@ -1,6 +1,7 @@
-const express = require("express");
-const cors = require("cors");
 require("dotenv").config();
+const cors = require("cors");
+const express = require("express");
+const fileUpload = require("express-fileupload");
 
 const dbConnection = require("../db/config");
 
@@ -16,6 +17,7 @@ class Server {
       category: "/api/categories",
       search: "/api/search",
       products: "/api/products",
+      upload: "/api/upload",
       user: "/api/users",
     };
 
@@ -42,6 +44,14 @@ class Server {
 
     // JSON parse
     this.app.use(express.json());
+
+    this.app.use(
+      fileUpload({
+        useTempFiles: true,
+        tempFileDir: "/tmp/",
+        createParentPath: true,
+      })
+    );
   }
 
   routes() {
@@ -50,6 +60,7 @@ class Server {
     this.app.use(this.paths.category, require("../routes/categories.routes"));
     this.app.use(this.paths.search, require("../routes/search.routes"));
     this.app.use(this.paths.products, require("../routes/products.routes"));
+    this.app.use(this.paths.upload, require("../routes/upload.routes"));
     this.app.use(this.paths.user, require("../routes/user.routes"));
   }
 
