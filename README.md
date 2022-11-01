@@ -1,5 +1,7 @@
 # REST Server scaffold | *v0.2.0*
 
+Here are a simple bases for you tu build your next amazing app.
+
 ## **Important**
 
 1. **This project if not ready for production, some sentive data are expose for development reason (see: `public/index.html`)** 
